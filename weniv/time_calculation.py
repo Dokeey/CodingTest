@@ -84,4 +84,4 @@ last_day_waiters = WAITERS % 1200
 
 year, month, day = find_day(total_day)
 hour, minuts = find_time(last_day_waiters)
-print(f'{year}년 {month}월 {day}일 {hour}시 {minuts}분 출발')
+print(f'{2020+year}년 {month}월 {day}일 {hour}시 {minuts}분 출발')
