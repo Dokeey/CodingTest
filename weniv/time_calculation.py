@@ -42,46 +42,85 @@
 '''
 
 
-def find_day(total_day):
-    first_month = 2048
-    year = 0
-    month = 1
+def answer1():
+    def find_day(total_day):
+        first_month = 2048
+        year = 0
+        month = 1
 
-    while True:
-        first_month = first_month / 2
-        total_day -= first_month
+        while True:
+            first_month = first_month / 2
+            total_day -= first_month
 
-        if total_day < 0:
-            total_day += first_month
-            break
-        if first_month == 2:
-            first_month = 2048
-            year += 1
-        month += 1
+            if total_day < 0:
+                total_day += first_month
+                break
+            if first_month == 2:
+                first_month = 2048
+                year += 1
+            month += 1
 
-    return year, month % 10, int(total_day)
+        return year, month % 10, int(total_day)
+
+    def find_time(waiters):
+        capacity_per_minute = [25, 15, 15, 15, 15, 15]
+        hour = int(waiters / 100)
+        last_hour_waiter = waiters % 100
+        minuts = 0
+
+        for capa in capacity_per_minute:
+            last_hour_waiter -= capa
+            if last_hour_waiter < 0:
+                last_hour_waiter += capa
+                break
+            minuts += 10
+        return hour + 9, minuts
+
+    # WAITERS = 14000605
+    WAITERS = 1200202
+    total_day = int(WAITERS / 1200)
+    last_day_waiters = WAITERS % 1200
+
+    year, month, day = find_day(total_day)
+    hour, minuts = find_time(last_day_waiters)
+
+    print(f'{2020 + year}년 {month}월 {day}일 {hour}시 {minuts}분 출발')
 
 
-def find_time(waiters):
-    capacity_per_minute = [25, 10, 10, 10, 10, 10]
-    hour = int(waiters / 100)
-    last_hour_waiter = waiters % 100
-    minuts = 0
+def answer2():
+    def get_month():
+        waiter_per_year = WAITERS % CAPACITY_PER_YEAR
+        for i, mon in enumerate(MONTHS):
+            if waiter_per_year < mon:
+                waiter_per_year += MONTHS[i-1] * CAPACITY_PER_DAY
+                return i, waiter_per_year
+            waiter_per_year -= mon * CAPACITY_PER_DAY
+        return None, None
 
-    for capa in capacity_per_minute:
-        last_hour_waiter -= capa
-        if last_hour_waiter < 0:
-            last_hour_waiter += capa
-            break
-        minuts += 10
-    return hour + 9, minuts
+    def get_minute():
+        waiter_per_hour = (waiter % CAPACITY_PER_DAY) % CAPACITY_PER_HOUR
+        for i, capa in enumerate(CAPACITY_TENPER_MINUTE):
+            if waiter_per_hour < capa:
+                return i
+            waiter_per_hour -= capa
+        return None
+
+    WAITERS = 14000605
+    MONTHS = [2 ** num for num in range(1, 11)]
+    MONTHS.reverse()
+    HOURS = [num for num in range(9, 21)]
+    CAPACITY_TENPER_MINUTE = [25, 15, 15, 15, 15, 15]
+    CAPACITY_PER_HOUR = sum(CAPACITY_TENPER_MINUTE)
+    CAPACITY_PER_DAY = len(HOURS) * CAPACITY_PER_HOUR
+    CAPACITY_PER_YEAR = sum(MONTHS) * CAPACITY_PER_DAY
+
+    year = 2020 + int(WAITERS / CAPACITY_PER_YEAR)
+    month, waiter = get_month()
+    day = int(waiter / CAPACITY_PER_DAY)
+    hour = 9 + int((waiter % CAPACITY_PER_DAY) / CAPACITY_PER_HOUR)
+    minute = get_minute()
+
+    print(f'{year}년 {month}월 {day}일 {hour}시 {minute}분 출발')
 
 
-# WAITERS = 14000605
-WAITERS = 1200202
-total_day = int(WAITERS / 1200)
-last_day_waiters = WAITERS % 1200
-
-year, month, day = find_day(total_day)
-hour, minuts = find_time(last_day_waiters)
-print(f'{2020+year}년 {month}월 {day}일 {hour}시 {minuts}분 출발')
+answer2()
