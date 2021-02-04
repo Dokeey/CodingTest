@@ -10,7 +10,7 @@ DFS 스택을 이용
 START : 첫 노드를 스택에 쌓는다.
 while stack:
     1. 스택에서 노드를 꺼낸다. 방문 안했다면 방문했다는 표시를 한다.
-    2. 자식 중 스택에 없는 노드를 전부 스택에 넣는다.
+    2. 자식 중 스택에 없고, 방문안했던 노드를 전부 스택에 넣는다.
 '''
 graph = {100: set([67, 66]),
          67: set([100, 82, 63]),
@@ -45,8 +45,6 @@ def only_max_dfs(first_node):
             if not nums:
                 break
             stack.append(max(nums))
-            print(f'visit : {visit}')
-            print(f'stack : {stack}')
     return visit
 
 
@@ -64,14 +62,11 @@ def only_min_dfs(first_node):
             if not nums:
                 break
             stack.append(min(nums))
-            print(f'visit : {visit}')
-            print(f'stack : {stack}')
     return visit
 
 
 max_visits = only_max_dfs(100)
 min_visits = only_min_dfs(100)
-print(max_visits, min_visits)
 
 print(''.join(list(map(chr, max_visits))))
 print(''.join(list(map(chr, min_visits))))
