@@ -1,4 +1,5 @@
 '''
+"a" 1
 "aabbaccc"	7
 "ababcdcdababcdcd"	9
 "abcabcdede"	8
